@@ -9,7 +9,7 @@ public abstract class DataBase {
 
     private static Example example = new Example();
     private static Data data = new Data();
-    private static MutableLiveData<List<CustomerDetail>> customerDetailsLD;
+    private static MutableLiveData<List<CustomerDetail>> customerDetailsLD = new MutableLiveData <>();
 
     static {
         data.setCustomerDetails(new ArrayList<>());

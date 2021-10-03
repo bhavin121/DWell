@@ -1,3 +1,4 @@
+
 package com.code_n_droid.dwell;
 
 import javax.annotation.Generated;
@@ -33,6 +34,7 @@ public class CustomerAddress {
     private String googleAddressData;
     @SerializedName("instructions")
     @Expose
+    private String instructions;
     @SerializedName("phone_no")
     @Expose
     private String phoneNo;
