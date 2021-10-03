@@ -1,4 +1,3 @@
-
 package com.code_n_droid.dwell;
 
 import java.util.List;
