@@ -33,7 +33,6 @@ public class CustomerAddress {
     private String googleAddressData;
     @SerializedName("instructions")
     @Expose
-    private String instructions;
     @SerializedName("phone_no")
     @Expose
     private String phoneNo;
