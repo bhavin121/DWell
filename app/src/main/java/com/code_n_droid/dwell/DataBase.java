@@ -11,6 +11,10 @@ public abstract class DataBase {
     private static Data data = new Data();
     private static MutableLiveData<List<CustomerDetail>> customerDetailsLD = new MutableLiveData <>();
 
+    public static MutableLiveData < List < CustomerDetail > > getCustomerDetailsLD ( ) {
+        return customerDetailsLD;
+    }
+
     static {
         data.setCustomerDetails(new ArrayList<>());
         example.setData(data);

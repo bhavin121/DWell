@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 
 import android.Manifest;
 import android.content.Intent;
@@ -81,6 +82,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         binding.myLocation.setOnClickListener(view -> {
             myLocationDialog.show();
         });
+
+        DataBase.getCustomerDetailsLD().observe( this , customerDetails -> {
+            addMarkers( customerDetails );
+        } );
     }
 
     private void buildEnterJSONDialog() {
@@ -234,9 +239,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15f));
 
         mMap.setOnMarkerClickListener(marker -> {
-            showDetailsDialog(marker.getId());
+            showDetailsDialog(marker.getTitle());
             return true;
         });
     }
 
+    public void addMarkers(List<CustomerDetail> customerDetails){
+//        mMap.clear();
+
+        for(int i=0;i< customerDetails.size();i++){
+            LatLong latLong = customerDetails.get( i ).getCustomerAddress().getLatLong();
+            LatLng latLng = new LatLng( Double.parseDouble( latLong.getLatitude() ), Double.parseDouble(latLong.getLongitude() ));
+
+            int markerType = (customerDetails.get( i ).getVisited())? MarkerBuilder.MARKER_TYPE_DELIVERED: MarkerBuilder.MARKER_TYPE_UN_DELIVERED;
+
+            deliveryLocations.add( mMap.addMarker( new MarkerOptions()
+            .position(latLng).icon( markerBuilder.getNumberedMarker(latLong.getRank(), markerType ))
+                    .title(customerDetails.get( i ).getId())
+            ) );
+        }
+    }
 }
