@@ -166,11 +166,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setView(addBinding.getRoot())
                 .create();
 
-        addAddressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        addressDetailsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));;
     }
 
-    public void showDetailsDialog(String id){
-        CustomerDetail customerDetail = DataBase.getCustomerDetailsById(id);
+    public void showDetailsDialog(int in){
+        System.out.println(in);
+        CustomerDetail customerDetail = DataBase.getData().getCustomerDetails().get(in);
         if(customerDetail != null){
             CustomerAddress address = customerDetail.getCustomerAddress();
             addBinding.name.setText(customerDetail.getCustomerName());
@@ -192,7 +193,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);
             });
+
+            addBinding.markDelivered.setOnClickListener( view -> {
+                deliveryLocations.get( in ).setIcon( markerBuilder.getNumberedMarker(customerDetail.getCustomerAddress().getLatLong().getRank(), MarkerBuilder.MARKER_TYPE_DELIVERED )  );
+//                String cid = customerDetail.getId();
+//                customerDetail.setVisited( true );
+//                boolean found = false;
+//                int i = 0;
+//                for(Marker m: deliveryLocations){
+//                    i++;
+//                    if(m.getTitle().equals( cid )){
+//                        found = true;
+//                        m.setIcon( markerBuilder.getNumberedMarker(customerDetail.getCustomerAddress().getLatLong().getRank(), MarkerBuilder.MARKER_TYPE_DELIVERED ) );
+//                        break;
+//                    }
+//                }
+
+//                if(!found){
+//                    Toast.makeText( this , "Not Found" , Toast.LENGTH_SHORT ).show();
+//                }else{
+//                    Toast.makeText( this , ""+i , Toast.LENGTH_SHORT ).show();
+//                }
+                addressDetailsDialog.dismiss();
+            } );
         }
+        addressDetailsDialog.show();
     }
 
     private void call(String phoneNo) {
@@ -239,7 +264,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15f));
 
         mMap.setOnMarkerClickListener(marker -> {
-            showDetailsDialog(marker.getTitle());
+            int index = deliveryLocations.indexOf( marker );
+            if(index >= 0){
+                showDetailsDialog( index );
+            }
             return true;
         });
     }
@@ -255,8 +283,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             deliveryLocations.add( mMap.addMarker( new MarkerOptions()
             .position(latLng).icon( markerBuilder.getNumberedMarker(latLong.getRank(), markerType ))
-                    .title(customerDetails.get( i ).getId())
-            ) );
+            ));
         }
     }
 }

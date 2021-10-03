@@ -12,7 +12,6 @@
         android:padding="20dp"
         android:layout_margin="40dp"
         android:orientation="vertical"
-        android:backgroundTint="@color/grayLightest"
         android:background="@drawable/dialog_background">
 
         <androidx.constraintlayout.widget.ConstraintLayout

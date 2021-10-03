@@ -16,7 +16,7 @@
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent"
         map:shapeAppearanceOverlay="@style/CircleImageStyle"
-        map:srcCompat="@drawable/logo" />
+        map:srcCompat="@mipmap/ic_launcher" />
 
     <fragment
         android:id="@+id/map"

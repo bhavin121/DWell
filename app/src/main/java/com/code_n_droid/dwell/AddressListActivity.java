@@ -15,7 +15,7 @@ public class AddressListActivity extends AppCompatActivity {
         ActivityAddressListBinding binding = ActivityAddressListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.list.setLayoutManager( new LinearLayoutManager( this ) );
-        binding.list.setAdapter( new AddressAdapter(DataBase.getData()) );
+        binding.list.setLayoutManager(new LinearLayoutManager( this ));
+        binding.list.setAdapter(new AddressAdapter(DataBase.getData()));
     }
 }

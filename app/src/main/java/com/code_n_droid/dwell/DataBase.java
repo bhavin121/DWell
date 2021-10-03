@@ -1,5 +1,6 @@
 package com.code_n_droid.dwell;
 
+import android.os.AsyncTask;
 import androidx.lifecycle.MutableLiveData;
 import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ public abstract class DataBase {
     public static void extractFromJsonString(String json) throws Exception{
         example = new GsonBuilder().create().fromJson(json, Example.class);
         data = example.getData();
-        customerDetailsLD.postValue ( data.getCustomerDetails () );
+
+        new PathTask().execute( data );
     }
 
     public static void addAddressData(CustomerDetail customerDetail){
@@ -44,9 +46,12 @@ public abstract class DataBase {
     }
 
     public static CustomerDetail getCustomerDetailsById(String id){
+        System.out.println(id);
         List<CustomerDetail> customerDetailList = data.getCustomerDetails();
+
         for(int i=0;i<customerDetailList.size();i++){
             if(customerDetailList.get(i).getId().equals(id)){
+                System.out.println(customerDetailList.get( i ).getId());
                 return  customerDetailList.get(i);
             }
         }
@@ -56,5 +61,28 @@ public abstract class DataBase {
 
     public static Data getData ( ) {
         return example.getData();
+    }
+
+    static class PathTask extends AsyncTask<Data, Void, Void> {
+
+        @Override
+        protected Void doInBackground ( Data... data ) {
+//            new Path().rankaddress(data[0]);
+            new path().rank( data[0] );
+
+//            for(int i=0;i<data[0].getCustomerDetails().size();i++){// Dummy Ranking
+//                data[0].getCustomerDetails().get(i)
+//                        .getCustomerAddress()
+//                        .getLatLong()
+//                        .setRank(i);
+//            }// Dummy Ranking
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute ( Void unused ) {
+            super.onPostExecute( unused );
+            customerDetailsLD.postValue ( data.getCustomerDetails () );
+        }
     }
 }
