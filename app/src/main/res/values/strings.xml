@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">DWell</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="_12">12</string>
+    <string name="show_all">Show All</string>
+    <string name="add_address">Add Address</string>
+    <string name="add_delivery_address">Add Delivery Address</string>
+    <string name="name">Name</string>
+    <string name="phone_no">Phone No</string>
+    <string name="flat_no">Flat No</string>
+    <string name="building">Building</string>
+    <string name="wing">Wing</string>
+    <string name="area">Area</string>
+    <string name="city">City</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="google_address_data">Google Address Data</string>
+    <string name="instructions">Instructions</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="from_json_file">From JSON</string>
+    <string name="add_manually">Add Manually</string>
+    <string name="bhavin_prajapat">Bhavin Prajapat</string>
+    <string name="example_phoneno">6013521524</string>
+    <string name="address">Address:</string>
+    <string name="address_example">203, Goyal orchid lakeview Orchid lakeview, Orchid Lakeview Apartment, E wing, Near kali mandir, Bellandur, Bangalore</string>
+    <string name="mark_as_delivered">Mark As Delivered</string>
+    <string name="navigate_me">Navigate Me</string>
+    <string name="cann_t_be_delivered">Cann’t Be Delivered</string>
+    <string name="save">Save</string>
+    <string name="delivery_addresses">Delivery Addresses</string>
+    <string name="enter_json_data">Enter Json Data</string>
+</resources>

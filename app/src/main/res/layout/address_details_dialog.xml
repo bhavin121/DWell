@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    >
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_margin="40dp"
+        android:orientation="vertical"
+        android:backgroundTint="@color/grayLightest"
+        android:background="@drawable/dialog_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp">
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/bhavin_prajapat"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/call"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/phoneNo"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/example_phoneno"
+                android:textColor="@color/gray"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/call"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/call"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/green"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/ic_phone"
+                app:iconGravity="start"
+                app:iconSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/phoneNo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/name" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/text"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/address"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/call"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <TextView
+            android:id="@+id/address"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/address_example"
+            android:textColor="@color/gray"
+            app:layout_constraintEnd_toStartOf="@+id/call"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/markDelivered"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/mark_as_delivered"
+            android:textAllCaps="false"
+            app:cornerRadius="30dp"
+            app:backgroundTint="@color/green"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/navigateMe"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/navigate_me"
+            android:textColor="@color/green"
+            android:textAllCaps="false"
+            app:cornerRadius="30dp"
+            app:backgroundTint="@color/white"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/canNotDeliver"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/cann_t_be_delivered"
+            android:textAllCaps="false"
+            app:cornerRadius="30dp"
+            app:backgroundTint="@color/red"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>
