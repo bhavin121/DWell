@@ -19,5 +19,4 @@ public class Data {
     public void setCustomerDetails(List<CustomerDetail> customerDetails) {
         this.customerDetails = customerDetails;
     }
-
 }
