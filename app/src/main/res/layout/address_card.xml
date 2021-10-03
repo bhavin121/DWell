@@ -31,7 +31,7 @@
                 />
 
             <TextView
-                android:id="@+id/address"
+                android:id="@+id/latLong"
                 android:paddingHorizontal="10dp"
                 android:layout_marginTop="10dp"
                 style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
