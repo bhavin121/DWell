@@ -1,4 +1,3 @@
-
 package com.code_n_droid.dwell;
 
 import javax.annotation.Generated;
@@ -41,3 +40,4 @@ public class LatLong {
         this.rank = rank;
     }
 }
+
