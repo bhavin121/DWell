@@ -23,6 +23,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         new Handler().postDelayed(() -> {
             startActivity(new Intent(this, MapsActivity.class));
+            finish();
         }, 4000);
     }
 }

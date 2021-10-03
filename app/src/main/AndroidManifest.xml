@@ -16,10 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DWell">
-        <activity android:name=".AddressListActivity" />
-        <activity android:name=".AddDeliveryAddressActivity" />
+        <activity android:name=".AddressListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AddDeliveryAddressActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".SplashScreenActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +43,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
