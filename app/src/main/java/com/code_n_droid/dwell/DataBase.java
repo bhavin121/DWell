@@ -49,4 +49,8 @@ public abstract class DataBase {
 
         return null;
     }
+
+    public static Data getData ( ) {
+        return example.getData();
+    }
 }

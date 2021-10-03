@@ -12,6 +12,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressVH> {
 
     public Data data;
 
+    public AddressAdapter ( Data data ) {
+        this.data=data;
+    }
+
     @NonNull
     @Override
     public AddressVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
