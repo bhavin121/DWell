@@ -116,7 +116,7 @@
                 android:layout_marginVertical="5dp"
                 android:paddingHorizontal="20dp"
                 android:hint="@string/latitude"
-                android:inputType="numberSigned"
+                android:inputType="numberSigned|numberDecimal"
                 android:background="@drawable/edit_text_background"/>
 
             <EditText
@@ -126,7 +126,7 @@
                 android:layout_marginVertical="5dp"
                 android:paddingHorizontal="20dp"
                 android:hint="@string/longitude"
-                android:inputType="numberSigned"
+                android:inputType="numberSigned|numberDecimal"
                 android:background="@drawable/edit_text_background"/>
 
             <EditText

@@ -1,5 +1,6 @@
 package com.code_n_droid.dwell;
 
+import androidx.lifecycle.MutableLiveData;
 import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +9,18 @@ public abstract class DataBase {
 
     private static Example example = new Example();
     private static Data data = new Data();
+    private static MutableLiveData<List<CustomerDetail>> customerDetailsLD;
 
     static {
         data.setCustomerDetails(new ArrayList<>());
         example.setData(data);
+        customerDetailsLD.postValue ( data.getCustomerDetails () );
     }
 
     public static void extractFromJsonString(String json) throws Exception{
         example = new GsonBuilder().create().fromJson(json, Example.class);
         data = example.getData();
+        customerDetailsLD.postValue ( data.getCustomerDetails () );
     }
 
     public static void addAddressData(CustomerDetail customerDetail){
@@ -32,6 +36,7 @@ public abstract class DataBase {
         }
 
         customerDetailList.add(customerDetail);
+        customerDetailsLD.postValue ( data.getCustomerDetails () );
     }
 
     public static CustomerDetail getCustomerDetailsById(String id){
