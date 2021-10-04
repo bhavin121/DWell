@@ -49,12 +49,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private FirebaseFirestore db;
-    private ActivityMapsBinding binding;
     private MarkerBuilder markerBuilder;
     private AlertDialog addAddressDialog, addressDetailsDialog, myLocationDialog, enterJsonDialog;
     private Marker myLocation;
 
-    private List<Marker> deliveryLocations = new ArrayList<>();
+    private final List<Marker> deliveryLocations = new ArrayList<>();
 
     private AddressDetailsDialogBinding addBinding;
 
@@ -64,8 +63,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         markerBuilder = new MarkerBuilder(getLayoutInflater());
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        com.code_n_droid.dwell.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate ( getLayoutInflater () );
+        setContentView( binding.getRoot());
 
         db = FirebaseFirestore.getInstance ();
 
@@ -85,21 +84,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         buildEnterJSONDialog();
 
-        binding.showAll.setOnClickListener(view -> {
+        binding.showAll.setOnClickListener( view -> {
             startActivity(new Intent(this, AddressListActivity.class));
         });
 
-        binding.addAddress.setOnClickListener(view -> {
+        binding.addAddress.setOnClickListener( view -> {
             addAddressDialog.show();
         });
 
-        binding.myLocation.setOnClickListener(view -> {
+        binding.myLocation.setOnClickListener( view -> {
             myLocationDialog.show();
         });
 
-        DataBase.getCustomerDetailsLD().observe( this , customerDetails -> {
-            addMarkers( customerDetails );
-        } );
+        DataBase.getCustomerDetailsLD().observe( this , this::addMarkers );
 
         getMyDataFromServer();
     }
@@ -315,18 +312,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng myLoc = new LatLng(12.93149700, 77.67884600);
-        DataBase.lat = 12.93149700;
-        DataBase.lon = 77.67884600;
-
-        myLocation = mMap.addMarker(new MarkerOptions()
-                .position(myLoc)
-                .icon(markerBuilder.getMyLocationMarker())
-                .title("My Location")
-        );
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLoc));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(15f));
+        addCurrLoc();
 
         mMap.setOnMarkerClickListener(marker -> {
             int index = deliveryLocations.indexOf( marker );
@@ -337,8 +323,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
+    private void addCurrLoc ( ) {
+        LatLng myLoc = new LatLng(12.93149700, 77.67884600);
+        DataBase.lat = 12.93149700;
+        DataBase.lon = 77.67884600;
+
+        myLocation = mMap.addMarker(new MarkerOptions()
+                .position(myLoc)
+                .icon(markerBuilder.getMyLocationMarker())
+                .title("My Location")
+                .zIndex ( 2f )
+        );
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLoc));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15f));
+    }
+
     public void addMarkers(List<CustomerDetail> customerDetails){
-//        mMap.clear();
+        mMap.clear();
+        deliveryLocations.clear ();
+        addCurrLoc ();
 
         for(int i=0;i< customerDetails.size();i++){
             LatLong latLong = customerDetails.get( i ).getCustomerAddress().getLatLong();
