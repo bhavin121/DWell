@@ -357,6 +357,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }else{
                 markerType = MarkerBuilder.MARKER_TYPE_UN_DELIVERED;
             }
+
             deliveryLocations.add( mMap.addMarker( new MarkerOptions()
             .position(latLng).icon( markerBuilder.getNumberedMarker(latLong.getRank(), markerType ))
             ));
