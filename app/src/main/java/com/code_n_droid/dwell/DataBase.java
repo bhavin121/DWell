@@ -8,6 +8,7 @@ import java.util.List;
 
 public abstract class DataBase {
 
+    public static double lat, lon;
     private static Example example = new Example();
     private static Data data = new Data();
     private static MutableLiveData<List<CustomerDetail>> customerDetailsLD = new MutableLiveData <>();
@@ -59,16 +60,21 @@ public abstract class DataBase {
         return null;
     }
 
+    public static void setCustomerDetailsist ( List < CustomerDetail > customerDetails ) {
+        data.setCustomerDetails ( customerDetails );
+        customerDetailsLD.postValue ( customerDetails );
+    }
+
     public static Data getData ( ) {
         return example.getData();
     }
 
     static class PathTask extends AsyncTask<Data, Void, Void> {
-
+        
         @Override
         protected Void doInBackground ( Data... data ) {
 //            new Path().rankaddress(data[0]);
-            new path().rank( data[0] );
+            new Path ().rank( data[0], lat, lon );
 
 //            for(int i=0;i<data[0].getCustomerDetails().size();i++){// Dummy Ranking
 //                data[0].getCustomerDetails().get(i)

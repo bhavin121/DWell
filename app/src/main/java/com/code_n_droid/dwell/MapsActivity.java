@@ -8,12 +8,14 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 import com.code_n_droid.dwell.databinding.AddAddressDailogBinding;
@@ -30,6 +32,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.code_n_droid.dwell.databinding.ActivityMapsBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +48,7 @@ import java.util.List;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private FirebaseFirestore db;
     private ActivityMapsBinding binding;
     private MarkerBuilder markerBuilder;
     private AlertDialog addAddressDialog, addressDetailsDialog, myLocationDialog, enterJsonDialog;
@@ -54,6 +66,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        db = FirebaseFirestore.getInstance ();
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -85,6 +99,41 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         DataBase.getCustomerDetailsLD().observe( this , customerDetails -> {
             addMarkers( customerDetails );
+        } );
+
+        getMyDataFromServer();
+    }
+
+    private void getMyDataFromServer ( ) {
+        ArrayList<CustomerDetail> customerDetailArrayList = new ArrayList <> ();
+        db.collection ( "myData" )
+                .get ()
+                .addOnCompleteListener( task -> {
+                    if (task.isSuccessful()) {
+                        for ( QueryDocumentSnapshot document : task.getResult()) {
+                            CustomerDetail cd = document.toObject ( CustomerDetail.class );
+                            customerDetailArrayList.add ( cd );
+                        }
+
+                        DataBase.setCustomerDetailsist ( customerDetailArrayList );
+                    } else {
+                        Toast.makeText ( MapsActivity.this , "Something went while fetching data" , Toast.LENGTH_SHORT ).show ();
+                    }
+                } );
+    }
+
+    private void uploadMyDataToServer ( ) {
+        List<CustomerDetail> customerDetailList = DataBase.getData ().getCustomerDetails ();
+        WriteBatch batch = db.batch ();
+
+        for( CustomerDetail cd: customerDetailList){
+            batch.set ( db.collection ( "myData" ).document (cd.getId ()), cd );
+        }
+
+        batch.commit ().addOnSuccessListener ( unused -> {
+            Toast.makeText ( this , "Data Saved" , Toast.LENGTH_SHORT ).show ();
+        } ).addOnFailureListener ( e -> {
+            Toast.makeText ( this , "Failed To Save Data" , Toast.LENGTH_SHORT ).show ();
         } );
     }
 
@@ -123,12 +172,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         myLocationDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        binding.latitude.setText("12.93085700");
-        binding.longitude.setText("77.67911100");
+        binding.latitude.setText("12.93149700");
+        binding.longitude.setText("77.67884600");
 
         binding.save.setOnClickListener(view -> {
             double latitude = Double.parseDouble(binding.latitude.getText().toString());
             double longitude = Double.parseDouble(binding.longitude.getText().toString());
+            DataBase.lat = latitude;
+            DataBase.lon = longitude;
             myLocation.setPosition(new LatLng(latitude, longitude));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
             mMap.moveCamera(CameraUpdateFactory.zoomTo(15f));
@@ -150,13 +201,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         binding.fromJSONFile.setOnClickListener(view -> {
             // Implement json read
             addAddressDialog.dismiss();
-            enterJsonDialog.show();
+//            enterJsonDialog.show();
+            loadData();
         });
 
         binding.addManually.setOnClickListener(view -> {
             startActivity(new Intent(this, AddDeliveryAddressActivity.class));
             addAddressDialog.dismiss();
         });
+    }
+
+    private void loadData ( ) {
+        db.collection ( "JSON_DATA" ).document ("data")
+                .get ()
+                .addOnSuccessListener ( documentSnapshot -> {
+                    String json = documentSnapshot.getString ( "json_string" );
+                    try {
+                        DataBase.extractFromJsonString ( json );
+                        new Handler ().postDelayed ( (Runnable) this::uploadMyDataToServer , 10000 );
+                    } catch (Exception e) {
+                        Toast.makeText ( MapsActivity.this , "Invalid Json" , Toast.LENGTH_SHORT ).show ();
+                    }
+                } )
+                .addOnFailureListener ( e -> {
+                    Toast.makeText ( this , "Something went wrong" , Toast.LENGTH_SHORT ).show ();
+                } );
     }
 
     private void buildAddressDetailsDialog(){
@@ -196,6 +265,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             addBinding.markDelivered.setOnClickListener( view -> {
                 deliveryLocations.get( in ).setIcon( markerBuilder.getNumberedMarker(customerDetail.getCustomerAddress().getLatLong().getRank(), MarkerBuilder.MARKER_TYPE_DELIVERED )  );
+                uploadMyDataToServer ();
 //                String cid = customerDetail.getId();
 //                customerDetail.setVisited( true );
 //                boolean found = false;
@@ -253,7 +323,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng myLoc = new LatLng(12.93085700, 77.67911100);
+        LatLng myLoc = new LatLng(12.93149700, 77.67884600);
+        DataBase.lat = 12.93149700;
+        DataBase.lon = 77.67884600;
+
         myLocation = mMap.addMarker(new MarkerOptions()
                 .position(myLoc)
                 .icon(markerBuilder.getMyLocationMarker())

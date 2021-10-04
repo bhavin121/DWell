@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "966660607061",
+    "project_id": "dwell-3908a",
+    "storage_bucket": "dwell-3908a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966660607061:android:d448fc25461cd24874d8dc",
+        "android_client_info": {
+          "package_name": "com.code_n_droid.dwell"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966660607061-tk33sm53fvme0hfod4tlojbhhd4mebpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV-JQlGsXqbwO3txHPkgTD-yCc8OyPuQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966660607061-tk33sm53fvme0hfod4tlojbhhd4mebpg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
