@@ -263,27 +263,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(mapIntent);
             });
 
+            addBinding.markDelivered.setEnabled ( !customerDetail.getVisited () );
+
             addBinding.markDelivered.setOnClickListener( view -> {
                 deliveryLocations.get( in ).setIcon( markerBuilder.getNumberedMarker(customerDetail.getCustomerAddress().getLatLong().getRank(), MarkerBuilder.MARKER_TYPE_DELIVERED )  );
+                customerDetail.setVisited ( true );
                 uploadMyDataToServer ();
-//                String cid = customerDetail.getId();
-//                customerDetail.setVisited( true );
-//                boolean found = false;
-//                int i = 0;
-//                for(Marker m: deliveryLocations){
-//                    i++;
-//                    if(m.getTitle().equals( cid )){
-//                        found = true;
-//                        m.setIcon( markerBuilder.getNumberedMarker(customerDetail.getCustomerAddress().getLatLong().getRank(), MarkerBuilder.MARKER_TYPE_DELIVERED ) );
-//                        break;
-//                    }
-//                }
+                addressDetailsDialog.dismiss();
+            } );
 
-//                if(!found){
-//                    Toast.makeText( this , "Not Found" , Toast.LENGTH_SHORT ).show();
-//                }else{
-//                    Toast.makeText( this , ""+i , Toast.LENGTH_SHORT ).show();
-//                }
+            addBinding.canNotDeliver.setOnClickListener( view -> {
+                deliveryLocations.get( in ).setIcon( markerBuilder.getNumberedMarker(customerDetail.getCustomerAddress().getLatLong().getRank(), MarkerBuilder.MARKER_TYPE_CAN_NOT_DELIVERED )  );
+                customerDetail.setCanDeliver ( false );
+                uploadMyDataToServer ();
                 addressDetailsDialog.dismiss();
             } );
         }
@@ -352,8 +344,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLong latLong = customerDetails.get( i ).getCustomerAddress().getLatLong();
             LatLng latLng = new LatLng( Double.parseDouble( latLong.getLatitude() ), Double.parseDouble(latLong.getLongitude() ));
 
-            int markerType = (customerDetails.get( i ).getVisited())? MarkerBuilder.MARKER_TYPE_DELIVERED: MarkerBuilder.MARKER_TYPE_UN_DELIVERED;
+            int markerType;
 
+            if(customerDetails.get ( i ).getVisited ()){
+                markerType = MarkerBuilder.MARKER_TYPE_DELIVERED;
+            }else if(!customerDetails.get ( i ).getCanDeliver ()){
+                markerType = MarkerBuilder.MARKER_TYPE_CAN_NOT_DELIVERED;
+            }else{
+                markerType = MarkerBuilder.MARKER_TYPE_UN_DELIVERED;
+            }
             deliveryLocations.add( mMap.addMarker( new MarkerOptions()
             .position(latLng).icon( markerBuilder.getNumberedMarker(latLong.getRank(), markerType ))
             ));

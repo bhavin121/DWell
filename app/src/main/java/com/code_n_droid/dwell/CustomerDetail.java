@@ -21,6 +21,16 @@ public class CustomerDetail {
     @Expose
     private Boolean visited;
 
+    private Boolean canDeliver = true;
+
+    public Boolean getCanDeliver ( ) {
+        return canDeliver;
+    }
+
+    public void setCanDeliver ( Boolean canDeliver ) {
+        this.canDeliver = canDeliver;
+    }
+
     public String getId() {
         return id;
     }

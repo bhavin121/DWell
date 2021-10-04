@@ -15,6 +15,7 @@ public class MarkerBuilder {
 
     public static final int MARKER_TYPE_DELIVERED = 0;
     public static final int MARKER_TYPE_UN_DELIVERED = 1;
+    public static final int MARKER_TYPE_CAN_NOT_DELIVERED = 2;
 
     private View markerView;
     private MarkerLayoutBinding binding;
@@ -34,6 +35,9 @@ public class MarkerBuilder {
         }else if(markerType == MARKER_TYPE_UN_DELIVERED){
             color = Color.parseColor("#FF575F");
             res = R.drawable.ic_un_delivered;
+        }else if(markerType == MARKER_TYPE_CAN_NOT_DELIVERED){
+            color = Color.parseColor("#FFC107");
+            res = R.drawable.ic_cannot_deliver;
         }else{
             return null;
         }
